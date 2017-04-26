@@ -1,13 +1,6 @@
 #ifndef HLTMCTRUTH_H
 #define HLTMCTRUTH_H
 
-#include "TH1.h"
-#include "TH2.h"
-#include "TFile.h"
-#include "TNamed.h"
-#include <vector>
-#include <map>
-#include "TROOT.h"
 #include "TChain.h"
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -15,10 +8,7 @@
 #include "SimDataFormats/Track/interface/SimTrack.h"
 #include "SimDataFormats/Vertex/interface/SimVertex.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
-
-#include "DataFormats/METReco/interface/CaloMETCollection.h"
-
-typedef std::vector<std::string> MyStrings;
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"  
 
 /** \class HLTMCtruth
   *  
@@ -26,6 +16,7 @@ typedef std::vector<std::string> MyStrings;
   * $Revision: 
   * \author P. Bargassa - Rice U.
   */
+
 class HLTMCtruth {
 public:
   HLTMCtruth(); 
@@ -35,20 +26,25 @@ public:
   /** Analyze the Data */
   void analyze(const edm::Handle<reco::CandidateView> & mctruth,
 	       const double        & pthat,
+	       const double        & weight,
 	       const edm::Handle<std::vector<SimTrack> > & simTracks,
 	       const edm::Handle<std::vector<SimVertex> > & simVertices,
+	       const edm::Handle<std::vector< PileupSummaryInfo > > & PupInfo, 
 	       TTree* tree);
 
 private:
 
   // Tree variables
-  float *mcvx, *mcvy, *mcvz, *mcpt, *mceta, *mcphi;
-  int *mcpid, *mcstatus;
+  //float *mcvx, *mcvy, *mcvz, *mcpt, *mceta, *mcphi;
+  int *mcpid; //, *mcstatus;
   int nmcpart,nmu3,nel3,nab,nbb,nwenu,nwmunu,nzee,nzmumu;
-  float pthatf;
+  int npubx0, npuvertbx0;
+  float pthatf, weightf, weightsignf;
   float ptEleMax,ptMuMax;
+
   // input variables
-  bool _Monte,_Debug;
+  bool _Debug;
+  bool _Gen;
 
 };
 
